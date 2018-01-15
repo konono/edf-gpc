@@ -47,6 +47,7 @@ TOGGLES:
     int r2hold_on;
     int r2rf_on;
     int lance_on;   
+
 main {
     
 //Disable RF
@@ -55,19 +56,21 @@ main {
 
     if (toggle_r2hold && r2hold_on) {combo_run (r2_hold);}
     if (toggle_lance && lance_on) {combo_run (lance_charge);}
+
     
 //--- Hold R2
-        
     if (get_val(touch)) {
             if (event_press(r2)) {r2hold_on=!r2hold_on;
                 if(r2hold_on==1){combo_restart(notify1);}
                 else{combo_restart(notify2);}}}
+
 //--- Lance Charge
     if (get_val(touch)) {
             if (event_press(l1)) {lance_on=!lance_on;
                 if(lance_on==1){combo_restart(notify1);}
                 else{combo_restart(notify2);}}}
 }
+
     combo notify1  {//1 second/ON
     wait(200);
     call (rmbl);}
