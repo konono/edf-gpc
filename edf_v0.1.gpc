@@ -1,0 +1,110 @@
+/*---------------------------------------------------------------------------------------EDF v0.1.gpc--------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|||||||||||||||||||||||||||||||||||||||||||||||||||||GPC created by Yuki for EDF on PS4 using Cronus Pro v1.2||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CHANGELOG:
+    v 0.1:  Added R2 Hold combo and lance auto charge & release
+
+INSTRUCTIONS:
+    
+    ONE RUMBLE MEANS ACTIVE - TWO RUMBLES MEANS NOT ACTIVE
+    
+    R2 Hold:       Hold R2
+    Lance charge:  Touch + L1 to Lance Auto charge (within 2sec charge)
+    
+TOGGLES:
+    Touch + R2 : Toggles Hold R2
+    Touch + L1 : Toggles Lance charge
+    
+*/
+//------------------------------------------------------------------------SET UP YOUR CONTROLS HERE IF YOU CHANGED IN GAME-------------------------------------------------------------------------------------
+//
+    define square       = PS4_SQUARE;
+    define circle       = PS4_CIRCLE;
+    define cross        = PS4_CROSS;
+    define trian        = PS4_TRIANGLE;
+    define touch        = PS4_TOUCH;
+    define r1           = PS4_R1;
+    define r2           = PS4_R2;
+    define r3           = PS4_R3;
+    define l1           = PS4_L1;
+    define l2           = PS4_L2;
+    define l3           = PS4_L3;
+    define ddown        = PS4_DOWN;
+    define dup          = PS4_UP;
+    define dright       = PS4_RIGHT;
+    define dleft        = PS4_LEFT;
+//
+//-------------------------------------------------------------------------SET FUNCTIONS YOU WANT TO TRUE REST TO FALSE----------------------------------------------------------------------------------------
+//
+    int toggle_r2hold   = TRUE;//   TRUE for R2 Hold
+    int toggle_r2rf     = TRUE;//   TRUE for R2 RF
+    int toggle_lance    = TRUE;//   TRUE for Lance Charge
+    
+//
+//----------------------------------------------------------------------------------------DON'T TOUCH----------------------------------------------------------------------------------------------------------
+    int r2hold_on;
+    int r2rf_on;
+    int lance_on;   
+main {
+    
+//Disable RF
+//  if (get_val(r2) && (toggle_r2rf && r2rf_on)) {combo_run (r2_turbo);}
+//
+
+    if (toggle_r2hold && r2hold_on) {combo_run (r2_hold);}
+    if (toggle_lance && lance_on) {combo_run (lance_charge);}
+    
+//--- Hold R2
+        
+    if (get_val(touch)) {
+            if (event_press(r2)) {r2hold_on=!r2hold_on;
+                if(r2hold_on==1){combo_restart(notify1);}
+                else{combo_restart(notify2);}}}
+//--- Lance Charge
+    if (get_val(touch)) {
+            if (event_press(l1)) {lance_on=!lance_on;
+                if(lance_on==1){combo_restart(notify1);}
+                else{combo_restart(notify2);}}}
+}
+    combo notify1  {//1 second/ON
+    wait(200);
+    call (rmbl);}
+    
+    combo notify2  {//1 second/OFF
+    wait(200);
+    call (rmbl2);}
+    
+    combo r2_turbo {
+    set_val(r2, 100);
+    wait(40);
+    set_val(r2, 0);
+    wait(40);
+    set_val(r2, 0);}
+    
+    combo r2_hold {
+    set_val(r2, 100);}
+    
+    combo lance_charge {
+    set_val(r2, 100);
+    wait(2000);
+    set_val(r2, 0);
+    wait(40);
+    set_val(r2, 0);}
+    
+    combo rmbl {
+    set_rumble(RUMBLE_A, 100);
+    wait(300);
+    reset_rumble();
+    wait(300);}
+    
+    combo rmbl2 {
+    set_rumble(RUMBLE_B,100);
+    wait(300);
+    reset_rumble();
+    wait(300); 
+    set_rumble(RUMBLE_B,100);
+    wait(300);
+    reset_rumble();
+    wait(500);}
